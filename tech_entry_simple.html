@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Data Entry System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px 12px 0 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .tech-selector {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .tech-selector option {
+            color: #000;
+        }
+        
+        .tech-selector:focus {
+            outline: none;
+            border-color: white;
+        }
+        
+        .scanner-hint {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 12px 20px;
+            color: #1565C0;
+            font-size: 13px;
+        }
+        
+        .scanner-hint strong {
+            color: #0d47a1;
+        }
+        
+        .toolbar {
+            background: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .toolbar-left {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .date-display {
+            font-weight: 600;
+            color: #495057;
+            padding: 8px 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        
+        .btn-add-row {
+            padding: 8px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-add-row:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+        
+        .entry-count {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .spreadsheet-container {
+            background: white;
+            overflow-x: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .spreadsheet {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1400px;
+        }
+        
+        .spreadsheet thead {
+            background: #f8f9fa;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 3px solid #dee2e6;
+        }
+        
+        .spreadsheet th {
+            padding: 15px 10px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 700;
+            color: #495057;
+            text-transform: uppercase;
+            border-right: 1px solid #dee2e6;
+        }
+        
+        .spreadsheet td {
+            padding: 8px;
+            border: 1px solid #e9ecef;
+            background: white;
+        }
+        
+        .spreadsheet tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .spreadsheet input,
+        .spreadsheet select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+        
+        .spreadsheet input:focus,
+        .spreadsheet select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+        
+        .service-tag-input {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: #fff8e1;
+            border: 2px dashed #ffc107 !important;
+        }
+        
+        .service-tag-input:focus {
+            background: #fffde7;
+            border-color: #ff9800 !important;
+        }
+        
+        .row-number {
+            background: #f8f9fa;
+            text-align: center;
+            font-weight: 600;
+            color: #6c757d;
+            padding: 8px;
+            border-right: 2px solid #dee2e6;
+        }
+        
+        .btn-delete-row {
+            padding: 6px 12px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            width: 100%;
+        }
+        
+        .btn-delete-row:hover {
+            background: #c82333;
+        }
+        
+        .submit-section {
+            background: white;
+            padding: 25px;
+            border-radius: 0 0 12px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 3px solid #e9ecef;
+        }
+        
+        .submit-info {
+            color: #6c757d;
+        }
+        
+        .submit-info strong {
+            color: #495057;
+            font-size: 18px;
+        }
+        
+        .btn-submit {
+            padding: 15px 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        
+        .alert.visible {
+            display: block;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <div>
+                    <h1>📊 Tech Data Entry System</h1>
+                    <p>Select your name, fill entries like a spreadsheet, then submit all at once</p>
+                </div>
+                <select class="tech-selector" id="techName" required>
+                    <option value="">-- Select Your Name --</option>
+                    <option value="ANDRE">ANDRE</option>
+                    <option value="ANTHONY">ANTHONY</option>
+                    <option value="ASHE">ASHE</option>
+                    <option value="BRANDON">BRANDON</option>
+                    <option value="CHRISTIAN">CHRISTIAN</option>
+                    <option value="CODY">CODY</option>
+                    <option value="DARIUS">DARIUS</option>
+                    <option value="DEMETRIUS">DEMETRIUS</option>
+                    <option value="GEOFF">GEOFF</option>
+                    <option value="JESS">JESS</option>
+                    <option value="JOSH">JOSH</option>
+                    <option value="KYLE">KYLE</option>
+                    <option value="TRISTIN">TRISTIN</option>
+                    <option value="TRINITY">TRINITY</option>
+                    <option value="TURNER">TURNER</option>
+                    <option value="TYREK">TYREK</option>
+                    <option value="ZAC">ZAC</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="scanner-hint">
+            <strong>🔍 Scanner Tip:</strong> Click in the "Service Tag" column (yellow box) and scan your barcode - it will auto-populate and move to the next field
+        </div>
+        
+        <!-- Alerts -->
+        <div class="alert alert-success" id="successAlert"></div>
+        <div class="alert alert-error" id="errorAlert"></div>
+        
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <div class="date-display" id="currentDate">📅 Today: Dec 4, 2025</div>
+                <button class="btn-add-row" onclick="addRow()">+ Add Row</button>
+            </div>
+            <div class="entry-count">
+                <span id="rowCount">0</span> entries ready
+            </div>
+        </div>
+        
+        <div class="spreadsheet-container">
+            <table class="spreadsheet" id="dataTable">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">#</th>
+                        <th style="width: 150px;">Tech Name</th>
+                        <th style="width: 130px;">Date</th>
+                        <th style="width: 150px;">Customer</th>
+                        <th style="width: 150px;">Service Tag *</th>
+                        <th style="width: 130px;">Status *</th>
+                        <th style="width: 180px;">On Hold Status</th>
+                        <th style="width: 120px;">Job Number</th>
+                        <th style="width: 120px;">Daily Hours</th>
+                        <th style="width: 80px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTableBody">
+                    <!-- Rows will be added here dynamically -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="submit-section">
+            <div class="submit-info">
+                <strong id="submitCount">0</strong> entries ready to submit
+            </div>
+            <button class="btn-submit" onclick="submitAllEntries()">
+                ✅ Submit All Entries
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        let rowCounter = 0;
+        const today = new Date().toISOString().split('T')[0];
+        
+        // Update current date display
+        document.getElementById('currentDate').textContent = `📅 Today: ${new Date().toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric', 
+            year: 'numeric' 
+        })}`;
+        
+        // Add initial rows
+        for (let i = 0; i < 5; i++) {
+            addRow();
+        }
+        
+        function addRow() {
+            rowCounter++;
+            const tbody = document.getElementById('dataTableBody');
+            const techName = document.getElementById('techName').value;
+            
+            const row = document.createElement('tr');
+            row.id = `row-${rowCounter}`;
+            row.innerHTML = `
+                <td class="row-number">${rowCounter}</td>
+                <td>
+                    <input type="text" class="tech-name-cell" value="${techName}" readonly style="background: #e9ecef; cursor: not-allowed;">
+                </td>
+                <td>
+                    <input type="date" value="${today}" required>
+                </td>
+                <td>
+                    <select class="customer-select">
+                        <option value="">Select...</option>
+                        <option value="RICHLAND 1">RICHLAND 1</option>
+                        <option value="ANDERSON 5">ANDERSON 5</option>
+                        <option value="ANDERSON">ANDERSON</option>
+                        <option value="UNION">UNION</option>
+                        <option value="FT. MILL">FT. MILL</option>
+                        <option value="IREDELL">IREDELL</option>
+                    </select>
+                </td>
+                <td>
+                    <input 
+                        type="text" 
+                        class="service-tag-input" 
+                        placeholder="SCAN HERE"
+                        onkeyup="this.value = this.value.toUpperCase()"
+                        onkeypress="if(event.key === 'Enter') { event.preventDefault(); this.closest('tr').querySelector('.status-select').focus(); }"
+                        required>
+                </td>
+                <td>
+                    <select class="status-select" required>
+                        <option value="">Select...</option>
+                        <option value="DIAGNOSED">DIAGNOSED</option>
+                        <option value="REPAIRED">REPAIRED</option>
+                        <option value="PARTIAL">PARTIAL</option>
+                        <option value="BER">BER</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="onhold-select">
+                        <option value="">None</option>
+                        <option value="AWAITING QA">AWAITING QA</option>
+                        <option value="AWAITING REPAIRS">AWAITING REPAIRS</option>
+                        <option value="AWAITING WARRANTY PARTS">AWAITING WARRANTY PARTS</option>
+                        <option value="AWAITING ADP PARTS">AWAITING ADP PARTS</option>
+                        <option value="AWAITING WORTH REPAIRS">AWAITING WORTH REPAIRS</option>
+                        <option value="AWAITING REIMAGE">AWAITING REIMAGE</option>
+                        <option value="BUG UNIT">BUG UNIT</option>
+                        <option value="BER">BER</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="number" placeholder="Job #">
+                </td>
+                <td>
+                    <input type="number" step="0.5" placeholder="Hours">
+                </td>
+                <td>
+                    <button class="btn-delete-row" onclick="deleteRow('row-${rowCounter}')">🗑️</button>
+                </td>
+            `;
+            
+            tbody.appendChild(row);
+            updateRowCount();
+        }
+        
+        // Update tech name in all rows when dropdown changes
+        document.getElementById('techName').addEventListener('change', function() {
+            const techName = this.value;
+            document.querySelectorAll('.tech-name-cell').forEach(cell => {
+                cell.value = techName;
+            });
+        });
+        
+        function deleteRow(rowId) {
+            const row = document.getElementById(rowId);
+            if (row) {
+                row.remove();
+                updateRowCount();
+            }
+        }
+        
+        function updateRowCount() {
+            const tbody = document.getElementById('dataTableBody');
+            const count = tbody.children.length;
+            document.getElementById('rowCount').textContent = count;
+            document.getElementById('submitCount').textContent = count;
+        }
+        
+        function showSuccess(message) {
+            const alert = document.getElementById('successAlert');
+            alert.textContent = message;
+            alert.classList.add('visible');
+            setTimeout(() => alert.classList.remove('visible'), 5000);
+        }
+        
+        function showError(message) {
+            const alert = document.getElementById('errorAlert');
+            alert.textContent = message;
+            alert.classList.add('visible');
+            setTimeout(() => alert.classList.remove('visible'), 5000);
+        }
+        
+        function submitAllEntries() {
+            const techName = document.getElementById('techName').value;
+            
+            if (!techName) {
+                showError('⚠️ Please select your name from the dropdown first!');
+                document.getElementById('techName').focus();
+                return;
+            }
+            
+            const tbody = document.getElementById('dataTableBody');
+            const rows = tbody.querySelectorAll('tr');
+            
+            if (rows.length === 0) {
+                showError('⚠️ No entries to submit. Add some rows first!');
+                return;
+            }
+            
+            const entries = [];
+            
+            rows.forEach((row, index) => {
+                const cells = row.querySelectorAll('td');
+                const date = cells[2].querySelector('input').value;
+                const customer = cells[3].querySelector('select').value;
+                const serviceTag = cells[4].querySelector('input').value;
+                const status = cells[5].querySelector('select').value;
+                const onHoldStatus = cells[6].querySelector('select').value;
+                const jobNumber = cells[7].querySelector('input').value;
+                const dailyHours = cells[8].querySelector('input').value;
+                
+                if (serviceTag && status) {
+                    entries.push({
+                        techName: techName,
+                        date: date,
+                        customer: customer,
+                        serviceTag: serviceTag,
+                        status: status,
+                        onHoldStatus: onHoldStatus,
+                        jobNumber: jobNumber,
+                        dailyHours: dailyHours
+                    });
+                }
+            });
+            
+            if (entries.length === 0) {
+                showError('⚠️ No valid entries! Make sure each row has at least Service Tag and Status filled in.');
+                return;
+            }
+            
+            // Submit to backend
+            fetch('submit_entries.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(entries)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showSuccess(`✅ Success! Submitted ${entries.length} entries to database.`);
+                    
+                    // Clear the table
+                    tbody.innerHTML = '';
+                    rowCounter = 0;
+                    
+                    // Add fresh rows
+                    for (let i = 0; i < 5; i++) {
+                        addRow();
+                    }
+                } else {
+                    showError('❌ Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Submit error:', error);
+                showError('❌ Error submitting entries. Make sure the backend is running.');
+            });
+        }
+    </script>
+</body>
+</html>
