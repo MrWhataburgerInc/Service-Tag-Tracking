@@ -6,9 +6,9 @@ DROP TABLE IF EXISTS technician;
 --Table creation
 CREATE TABLE unit (
     service_tag VARCHAR(50) PRIMARY KEY,
-    current_status VARCHAR(50)('DIAGNOSED', 'REPAIRED', 'PARTIAL', 'BER', 'COMPLETED') NOT NULL,
-    on_hold_status VARCHAR(50)('AWAITING ADP REPAIR', 'AWAITING DELL WARRANTY_PARTS', 'AWAITING QA', 'AWAITING VENDOR DEPOT', ),
-    customer_name VARCHAR(20),
+    current_status VARCHAR2(50)('DIAGNOSED', 'REPAIRED', 'PARTIAL', 'BER', 'COMPLETED') NOT NULL,
+    on_hold_status VARCHAR2(50)('AWAITING ADP REPAIR', 'AWAITING DELL WARRANTY_PARTS', 'AWAITING QA', 'AWAITING VENDOR DEPOT', ),
+    customer_name VARCHAR2(20)('RICHLAND 1', 'ANDERSON 5', "FT. MILL", 'UNION', 'IREDELL' ),
     assigned_technician VARCHAR(50),
     job_number INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -48,23 +48,37 @@ CREATE TABLE technician (
 
 --Insert Values
 INSERT INTO technician (technician_name) VALUES 
-('ANDRE'),
-('ANTHONY'),
-('ASHE'),
+('ANDRE'),('ANTHONY'),('ASHE'),
 ('BRANDON'),
-('CODY'),
-('CHRISTIAN'),
-('DARIUS'),
-('DEMETRUIS'),
+('CODY'),('CHRISTIAN'),('CRUZ'),
+('DARIUS'),('DAVID'),('DEMETRUIS'),
 ('GOEFF'),
-('JESS'),
-('JOSH'),
+('JESS'),('JOSH'),
 ('KYLE'),
-('TRISTIN'),
-('TRINITY'),
-('TURNER'),
-('TYREK'),
+('PAM'),
+('RYAN'),
+('TRISTIN'),('TRINITY'),('TURNER'),('TYREK'),
 ('ZAC');
+
+
+-- 1. Add the new column (nullable for now)
+ALTER TABLE units
+  ADD COLUMN current_tech_id INT NULL,
+  ADD INDEX idx_current_tech_id (current_tech_id);
+
+-- 2. Populate from existing current_tech (if you have names matching tech_users.tech_name)
+UPDATE units u
+JOIN tech_users t ON u.current_tech = t.tech_name
+SET u.current_tech_id = t.tech_id;
+
+-- 3. Make column NOT NULL if appropriate (only after verifying)
+ALTER TABLE units
+  MODIFY COLUMN current_tech_id INT NOT NULL;
+
+-- 4. Add foreign key constraint
+ALTER TABLE units
+  ADD CONSTRAINT fk_units_tech FOREIGN KEY (current_tech_id) REFERENCES tech_users(tech_id) ON DELETE SET NULL ON UPDATE CASCADE;
+
 
 --SAMPLE DATA FOR TESTING
 INSERT INTO unit (service_tag, current_status, on_hold_status, customer_name, assigned_technician, job_number)
