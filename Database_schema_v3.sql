@@ -42,8 +42,10 @@ CREATE TABLE work_history (
 
 CREATE TABLE technician (
     technician_name VARCHAR(20) PRIMARY KEY,
-    number_of_kickbacks INT,
+    kickbacks INT,
     part_addons INT,
+    misdiags INT,
+
 )
 
 --Insert Values
