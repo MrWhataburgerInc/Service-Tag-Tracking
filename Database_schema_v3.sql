@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS technician;
 --Table creation
 CREATE TABLE unit (
     service_tag VARCHAR(50) PRIMARY KEY,
-    current_status VARCHAR2(50)('DIAGNOSED', 'REPAIRED', 'PARTIAL', 'BER', 'COMPLETED') NOT NULL,
+    current_status VARCHAR2(50)('DIAGNOSED', 'REPAIRED', 'PARTIAL', 'BER', 'COMPLETED',) NOT NULL,
     on_hold_status VARCHAR2(50)('AWAITING ADP REPAIR', 'AWAITING DELL WARRANTY_PARTS', 'AWAITING QA', 'AWAITING VENDOR DEPOT', ),
     customer_name VARCHAR2(20)('RICHLAND 1', 'ANDERSON 5', "FT. MILL", 'UNION', 'IREDELL' ),
     assigned_technician VARCHAR(50),
