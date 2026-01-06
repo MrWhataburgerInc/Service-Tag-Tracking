@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 
 // Database connection
 $host = 'localhost';
-$dbname = 'tech_db';
+$dbname = 'unitsdb';
 $username = 'root';
 $password = '';
 
@@ -48,7 +48,7 @@ try {
         $hoursWorked = $entry['dailyHours'] ?: null;
         
         // Check if unit already exists
-        $checkStmt = $conn->prepare("SELECT service_tag, current_status FROM units WHERE service_tag = ?");
+        $checkStmt = $conn->prepare("SELECT service_tag, current_status FROM unit WHERE service_tag = ? AND job_number =?");
         $checkStmt->execute([$serviceTag]);
         $existingUnit = $checkStmt->fetch(PDO::FETCH_ASSOC);
         
@@ -58,11 +58,11 @@ try {
             
             // Update units table with new status
             $updateUnit = $conn->prepare("
-                UPDATE units SET
+                UPDATE unit SET
                     current_status = ?,
-                    current_on_hold_status = ?,
-                    current_tech = ?,
-                    customer = ?,
+                    on_hold_status = ?,
+                    assigned_technician = ?,
+                    customer_name = ?,
                     job_number = ?,
                     last_updated = NOW()
                 WHERE service_tag = ?
@@ -79,7 +79,7 @@ try {
             // Add to work history
             $addHistory = $conn->prepare("
                 INSERT INTO work_history 
-                (service_tag, tech_name, work_date, status_before, status_after, on_hold_status, hours_worked)
+                (service_tag, technician_name, work_date, status_before, status_after, on_hold_status, hours_worked)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
             ");
             $addHistory->execute([
@@ -97,8 +97,8 @@ try {
         } else {
             // NEW UNIT - Create it
             $insertUnit = $conn->prepare("
-                INSERT INTO units
-                (service_tag, current_status, current_on_hold_status, customer, current_tech, job_number)
+                INSERT INTO unit
+                (service_tag, current_status, on_hold_status, customer, current_tech, job_number)
                 VALUES (?, ?, ?, ?, ?, ?)
             ");
             $insertUnit->execute([
@@ -113,7 +113,7 @@ try {
             // Add to work history
             $addHistory = $conn->prepare("
                 INSERT INTO work_history
-                (service_tag, tech_name, work_date, status_before, status_after, on_hold_status, hours_worked)
+                (service_tag, technicnan_name, work_date, status_before, status_after, on_hold_status, hours_worked)
                 VALUES (?, ?, ?, NULL, ?, ?, ?)
             ");
             $addHistory->execute([
