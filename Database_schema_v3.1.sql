@@ -76,3 +76,5 @@ INSERT INTO unit (service_tag, current_status, on_hold_status, customer_name, as
 VALUES ('FFH8VW3', 'DIAGNOSED', 'AWAITING DELL WARRANTY_PARTS', 'RICHLAND 1', 'GEOFF', 82071);
 INSERT INTO unit (service_tag, current_status, on_hold_status, customer_name, assigned_technician, job_number)
 VALUES ('a1b2c3d', 'REPAIRED', 'QA', 'ANDERSON 5', 'BRANDON', 12345);
+INSERT INTO unit (service_tag, current_status, on_hold_status, customer_name, assigned_technician, job_number)
+VALUES ('d3b2a1c', 'REPAIRED', 'QA', 'ANDERSON 5', 'BRANDON', 54321);
