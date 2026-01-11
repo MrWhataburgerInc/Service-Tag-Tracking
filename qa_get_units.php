@@ -24,16 +24,24 @@ $tech = $_GET['tech'] ?? '';
 $customer = $_GET['customer'] ?? '';
 
 // Build query with filters
-$query = "SELECT * FROM units WHERE 1=1";
+$query = "SELECT 
+    service_tag,
+    customer_name as customer,
+    current_status,
+    on_hold_status as current_on_hold_status,
+    assigned_technician as current_tech,
+    job_number,
+    updated_at as last_updated
+FROM unit WHERE 1=1";
 $params = [];
 
 if ($dateFrom) {
-    $query .= " AND last_updated >= ?";
+    $query .= " AND updated_at >= ?";
     $params[] = $dateFrom . ' 00:00:00';
 }
 
 if ($dateTo) {
-    $query .= " AND last_updated <= ?";
+    $query .= " AND updated_at <= ?";
     $params[] = $dateTo . ' 23:59:59';
 }
 
@@ -43,16 +51,16 @@ if ($status) {
 }
 
 if ($tech) {
-    $query .= " AND current_tech = ?";
+    $query .= " AND assigned_technician = ?";
     $params[] = $tech;
 }
 
 if ($customer) {
-    $query .= " AND customer = ?";
+    $query .= " AND customer_name = ?";
     $params[] = $customer;
 }
 
-$query .= " ORDER BY last_updated DESC";
+$query .= " ORDER BY updated_at DESC";
 
 $stmt = $conn->prepare($query);
 $stmt->execute($params);
@@ -63,7 +71,7 @@ $statsQuery = "
     SELECT 
         current_status,
         COUNT(*) as count
-    FROM units
+    FROM unit
     GROUP BY current_status
 ";
 $statsStmt = $conn->query($statsQuery);
@@ -73,7 +81,8 @@ $stats = [
     'diagnosed' => 0,
     'repaired' => 0,
     'partial' => 0,
-    'completed' => 0
+    'completed' => 0,
+    'ber' => 0
 ];
 
 foreach ($statsRaw as $stat) {
