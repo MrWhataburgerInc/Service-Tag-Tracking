@@ -687,8 +687,37 @@
         }
         
         function exportToExcel() {
-            alert('Export feature: In production, this would download current view as Excel file.\n\nFor now, you can:\n1. Use phpMyAdmin to export\n2. Or copy data from table');
+         // Get current filter values
+            const dateFrom = document.getElementById('filterDateFrom').value;
+            const dateTo = document.getElementById('filterDateTo').value;
+            const status = document.getElementById('filterStatus').value;
+            const tech = document.getElementById('filterTech').value;
+            const customer = document.getElementById('filterCustomer').value;
+        // Build query string with filters
+            const params = new URLSearchParams({
+                dateFrom: dateFrom,
+                dateTo: dateTo,
+                status: status,
+                tech: tech,
+                customer: customer
+         });
+    
+        // Trigger download
+            window.location.href = `export_excel.php?${params}`;
         }
+
+    // Build query string with filters
+    const params = new URLSearchParams({
+        dateFrom: dateFrom,
+        dateTo: dateTo,
+        status: status,
+        tech: tech,
+        customer: customer
+    });
+    
+    // Trigger download
+    window.location.href = `export_excel.php?${params}`;
+}
         
         // Close modal on outside click
         document.getElementById('historyModal').addEventListener('click', function(e) {
