@@ -164,6 +164,10 @@
             cursor: pointer;
         }
         
+        .btn-reset:hover {
+            background: #5a6268;
+        }
+        
         .btn-export {
             padding: 10px 25px;
             background: #28a745;
@@ -173,6 +177,10 @@
             font-weight: 600;
             cursor: pointer;
             margin-left: auto;
+        }
+        
+        .btn-export:hover {
+            background: #218838;
         }
         
         .data-table-section {
@@ -403,7 +411,7 @@
         <!-- Stats Cards -->
         <div class="stats-grid">
             <div class="stat-card diagnosed">
-                <div class="stat-label">🔍 Diagnosed</div>
+                <div class="stat-label">📍 Diagnosed</div>
                 <div class="stat-value" id="statDiagnosed">0</div>
             </div>
             <div class="stat-card repaired">
@@ -422,7 +430,7 @@
         
         <!-- Filters -->
         <div class="filters-section">
-            <div class="filters-title">🔎 Filter Units</div>
+            <div class="filters-title">🔍 Filter Units</div>
             <div class="filters-grid">
                 <div class="filter-group">
                     <label>Date From</label>
@@ -480,7 +488,7 @@
                 </div>
             </div>
             <div class="filter-actions">
-                <button class="btn-filter" onclick="applyFilters()">🔍 Apply Filters</button>
+                <button class="btn-filter" onclick="applyFilters()">🔎 Apply Filters</button>
                 <button class="btn-reset" onclick="resetFilters()">🔄 Reset</button>
                 <button class="btn-export" onclick="exportToExcel()">📊 Export to Excel</button>
             </div>
@@ -596,11 +604,11 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td><span class="service-tag">${unit.service_tag}</span></td>
-                    <td>${unit.customer || '—'}</td>
+                    <td>${unit.customer || '–'}</td>
                     <td><span class="status-badge status-${unit.current_status.toLowerCase()}">${unit.current_status}</span></td>
-                    <td>${unit.current_on_hold_status || '—'}</td>
-                    <td>${unit.current_tech || '—'}</td>
-                    <td>${unit.job_number || '—'}</td>
+                    <td>${unit.current_on_hold_status || '–'}</td>
+                    <td>${unit.current_tech || '–'}</td>
+                    <td>${unit.job_number || '–'}</td>
                     <td>${formatDate(unit.last_updated)}</td>
                     <td><button class="btn-view-history" onclick="viewHistory('${unit.service_tag}')">📋 History</button></td>
                 `;
@@ -665,7 +673,7 @@
                         <div class="history-item">
                             <div class="history-date">
                                 ${formatDate(item.work_date)}
-                                <span class="history-tech">${item.tech_name}</span>
+                                <span class="history-tech">${item.technician_name}</span>
                             </div>
                             <div class="history-details">
                                 <strong>${item.status_before || 'NEW'} → ${item.status_after}</strong>
@@ -687,37 +695,25 @@
         }
         
         function exportToExcel() {
-         // Get current filter values
+            // Get current filter values
             const dateFrom = document.getElementById('filterDateFrom').value;
             const dateTo = document.getElementById('filterDateTo').value;
             const status = document.getElementById('filterStatus').value;
             const tech = document.getElementById('filterTech').value;
             const customer = document.getElementById('filterCustomer').value;
-        // Build query string with filters
+            
+            // Build query string with filters
             const params = new URLSearchParams({
                 dateFrom: dateFrom,
                 dateTo: dateTo,
                 status: status,
                 tech: tech,
                 customer: customer
-         });
-    
-        // Trigger download
+            });
+            
+            // Trigger download
             window.location.href = `export_excel.php?${params}`;
         }
-
-    // Build query string with filters
-    const params = new URLSearchParams({
-        dateFrom: dateFrom,
-        dateTo: dateTo,
-        status: status,
-        tech: tech,
-        customer: customer
-    });
-    
-    // Trigger download
-    window.location.href = `export_excel.php?${params}`;
-}
         
         // Close modal on outside click
         document.getElementById('historyModal').addEventListener('click', function(e) {

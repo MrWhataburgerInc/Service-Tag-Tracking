@@ -1,0 +1,24 @@
+[2026-01-12 03:29:34] === NEW REQUEST ===
+[2026-01-12 03:29:34] Method: POST
+[2026-01-12 03:29:34] Content-Type: application/json
+[2026-01-12 03:29:34] ✅ Database connected successfully
+[2026-01-12 03:29:34] Raw input received: 176 bytes
+[2026-01-12 03:29:34] Entries parsed: 1 items
+[2026-01-12 03:29:34] Transaction started
+[2026-01-12 03:29:34] Processing entry 0
+[2026-01-12 03:29:34]   Tag: 1ERD4T6, Tech: BRANDON, Status: REPAIRED
+[2026-01-12 03:29:34]   NEW UNIT - creating
+[2026-01-12 03:29:34]   ✅ New unit created and history added
+[2026-01-12 03:29:34] ✅ Transaction committed successfully
+[2026-01-12 03:32:38] === NEW REQUEST ===
+[2026-01-12 03:32:38] Method: POST
+[2026-01-12 03:32:38] Content-Type: application/json
+[2026-01-12 03:32:38] ✅ Database connected successfully
+[2026-01-12 03:32:38] Raw input received: 169 bytes
+[2026-01-12 03:32:38] Entries parsed: 1 items
+[2026-01-12 03:32:38] Transaction started
+[2026-01-12 03:32:38] Processing entry 0
+[2026-01-12 03:32:38]   Tag: 1245FDS, Tech: BRANDON, Status: BER
+[2026-01-12 03:32:38]   NEW UNIT - creating
+[2026-01-12 03:32:38]   ✅ New unit created and history added
+[2026-01-12 03:32:38] ✅ Transaction committed successfully
