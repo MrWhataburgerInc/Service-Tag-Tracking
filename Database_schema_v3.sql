@@ -5,16 +5,19 @@ DROP TABLE IF EXISTS technician;
 
 -- Table creation
 CREATE TABLE unit (
-    service_tag VARCHAR(50) PRIMARY KEY,
-    current_status VARCHAR2(50)('DIAGNOSED', 'REPAIRED', 'PARTIAL', 'BER', 'COMPLETED') NOT NULL,
-    on_hold_status VARCHAR2(50)('AWAITING ADP REPAIR', 'AWAITING DELL WARRANTY_PARTS', 'AWAITING QA', 'AWAITING VENDOR DEPOT', ),
-    customer_name VARCHAR2(20)('RICHLAND 1', 'ANDERSON 5', "FT. MILL", 'UNION', 'IREDELL' ),
+    service_tag VARCHAR(50),
+    current_status ENUM('DIAGNOSED', 'REPAIRED', 'PARTIAL', 'BER', 'COMPLETED') NOT NULL,
+    on_hold_status ENUM('AWAITING ADP REPAIR', 'AWAITING DELL WARRANTY_PARTS', 'AWAITING QA', 'AWAITING VENDOR DEPOT'),
+    customer_name ENUM('RICHLAND 1', 'ANDERSON 5', 'FT. MILL', 'UNION', 'IREDELL'),
     assigned_technician VARCHAR(50),
     job_number INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-       CONSTRAINT service_tag PRIMARY KEY (service_tag,job_number),
     
+    -- Defining the Composite Primary Key here
+    PRIMARY KEY (service_tag, job_number),
+    
+    -- Indexes for performance
     INDEX idx_current_status (current_status),
     INDEX idx_customer (customer_name),
     INDEX idx_technician (assigned_technician),
@@ -70,7 +73,7 @@ ALTER TABLE unit
 
 -- 2. Populate from existing current_tech (if you have names matching tech_users.tech_name)
 UPDATE unit u
-JOIN technician t ON u.current_tech = t.tech_name
+JOIN technician t ON u.assigned_technician = t.tech_name
 SET u.current_tech_id = t.tech_id;
 
 -- 3. Make column NOT NULL if appropriate (only after verifying)
