@@ -44,7 +44,6 @@ CREATE TABLE work_history (
     status_after VARCHAR(50) NOT NULL,
     on_hold_status ENUM('AWAITING ADP REPAIR', 'AWAITING DELL WARRANTY_PARTS', 'AWAITING QA', 'AWAITING VENDOR DEPOT'),
     notes TEXT,
-    hours_worked DECIMAL(3,1),
     submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     
     INDEX idx_service_tag (service_tag),
@@ -71,10 +70,10 @@ INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, custo
 VALUES ('d3b2a1c', 54321, 'REPAIRED', 'AWAITING QA', 'ANDERSON 5', 'BRANDON', (SELECT tech_id FROM technician WHERE technician_name = 'BRANDON'));
 
 -- 6. Insert sample work history
-INSERT INTO work_history (service_tag, job_number, technician_name, work_date, status_before, status_after, on_hold_status, notes, hours_worked)
+INSERT INTO work_history (service_tag, job_number, technician_name, work_date, status_before, status_after, on_hold_status, notes)
 VALUES ('FFH8VW3', 82071, 'GEOFF', '2025-01-15', NULL, 'DIAGNOSED', 'AWAITING DELL WARRANTY_PARTS', 'Diagnosed the unit, awaiting parts.', 2.0);
 
-INSERT INTO work_history (service_tag, job_number, technician_name, work_date, status_before, status_after, on_hold_status, notes, hours_worked)
+INSERT INTO work_history (service_tag, job_number, technician_name, work_date, status_before, status_after, on_hold_status, notes)
 VALUES ('a1b2c3d', 12345, 'BRANDON', '2025-01-20', 'DIAGNOSED', 'REPAIRED', 'AWAITING QA', 'Repaired motherboard.', 3.5);
 
 -- Verify data
