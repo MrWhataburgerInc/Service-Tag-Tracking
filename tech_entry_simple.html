@@ -426,12 +426,14 @@
                         <option value="AWAITING ADP PARTS">AWAITING ADP PARTS</option>
                         <option value="AWAITING WORTH REPAIRS">AWAITING WORTH REPAIRS</option>
                         <option value="AWAITING REIMAGE">AWAITING REIMAGE</option>
+                        <option value="AWAITING DELL DEPOT">AWAITING DELL DEPOT</option>
+                        <option value="AWAITING IMAGING">AWAITING IMAGING</option>
                         <option value="BUG UNIT">BUG UNIT</option>
                         <option value="BER">BER</option>
                     </select>
                 </td>
                 <td>
-                    <input type="number" placeholder="Job #">
+                    <input type="number" pattern="\d{5}" maxlength="6" placeholder="Job #">
                 </td>
                 <td>
                     <input type="number" step="0.5" placeholder="Hours">
