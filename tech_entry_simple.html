@@ -309,7 +309,7 @@
         </div>
         
         <div class="scanner-hint">
-            <strong>🔍 Scanner Tip:</strong> Click in the "Service Tag" column (yellow box) and scan your barcode - it will auto-populate and move to the next field
+            <strong>🔍 Scanner Tip:</strong> The "Service Tag" column (yellow box) works with your scanner
         </div>
         
         <!-- Alerts -->
@@ -338,7 +338,6 @@
                         <th style="width: 130px;">Status *</th>
                         <th style="width: 180px;">On Hold Status</th>
                         <th style="width: 120px;">Job Number</th>
-                        <th style="width: 120px;">Daily Hours</th>
                         <th style="width: 80px;">Actions</th>
                     </tr>
                 </thead>
@@ -509,7 +508,6 @@
                 const status = cells[5].querySelector('select').value;
                 const onHoldStatus = cells[6].querySelector('select').value;
                 const jobNumber = cells[7].querySelector('input').value;
-                const dailyHours = cells[8].querySelector('input').value;
                 
                 if (serviceTag && status) {
                     entries.push({
@@ -519,8 +517,7 @@
                         serviceTag: serviceTag,
                         status: status,
                         onHoldStatus: onHoldStatus,
-                        jobNumber: jobNumber,
-                        dailyHours: dailyHours
+                        jobNumber: jobNumber
                     });
                 }
             });
