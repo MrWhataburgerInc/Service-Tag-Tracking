@@ -338,7 +338,7 @@
                         <th style="width: 130px;">Status *</th>
                         <th style="width: 180px;">On Hold Status</th>
                         <th style="width: 120px;">Job Number</th>
-                        <th style="width: 80px;">Actions</th>
+                        <th style="width: 80px;">Delete Row</th>
                     </tr>
                 </thead>
                 <tbody id="dataTableBody">
@@ -536,7 +536,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    showSuccess(`✅ Success! Submitted ${entries.length} entries to database.`);
+                    showSuccess(`✅ Success! Submitted ${entries.length} entries.`);
                     
                     // Clear the table
                     tbody.innerHTML = '';
