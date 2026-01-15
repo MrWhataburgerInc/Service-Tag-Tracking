@@ -112,7 +112,7 @@ try {
             $addHistory = $conn->prepare("
                 INSERT INTO work_history 
                 (service_tag, job_number, technician_name, work_date, status_before, status_after, on_hold_status)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
             ");
             $addHistory->execute([
                 $serviceTag,
@@ -149,7 +149,7 @@ try {
             $addHistory = $conn->prepare("
                 INSERT INTO work_history
                 (service_tag, job_number, technician_name, work_date, status_before, status_after, on_hold_status)
-                VALUES (?, ?, ?, ?, NULL, ?, ?, ?)
+                VALUES (?, ?, ?, ?, NULL, ?, ?)
             ");
             $addHistory->execute([
                 $serviceTag,
