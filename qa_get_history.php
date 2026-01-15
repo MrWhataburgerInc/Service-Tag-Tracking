@@ -32,7 +32,6 @@ $stmt = $conn->prepare("
         status_before,
         status_after,
         on_hold_status,
-        hours_worked,
         notes,
         submitted_at
     FROM work_history

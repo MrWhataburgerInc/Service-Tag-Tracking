@@ -77,7 +77,6 @@ try {
         $newStatus = $entry['status'];
         $onHoldStatus = $entry['onHoldStatus'] ?: null;
         $jobNumber = $entry['jobNumber'] ?: null;
-        $hoursWorked = $entry['dailyHours'] ?: null;
         
         logError("  Tag: $serviceTag, Tech: $techName, Status: $newStatus");
         
@@ -112,7 +111,7 @@ try {
             // Add to work history
             $addHistory = $conn->prepare("
                 INSERT INTO work_history 
-                (service_tag, job_number, technician_name, work_date, status_before, status_after, on_hold_status, hours_worked)
+                (service_tag, job_number, technician_name, work_date, status_before, status_after, on_hold_status)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             ");
             $addHistory->execute([
@@ -122,8 +121,7 @@ try {
                 $workDate,
                 $oldStatus,
                 $newStatus,
-                $onHoldStatus,
-                $hoursWorked
+                $onHoldStatus
             ]);
             
             logError("  ✅ Unit updated and history added");
@@ -150,7 +148,7 @@ try {
             // Add to work history
             $addHistory = $conn->prepare("
                 INSERT INTO work_history
-                (service_tag, job_number, technician_name, work_date, status_before, status_after, on_hold_status, hours_worked)
+                (service_tag, job_number, technician_name, work_date, status_before, status_after, on_hold_status)
                 VALUES (?, ?, ?, ?, NULL, ?, ?, ?)
             ");
             $addHistory->execute([
@@ -159,8 +157,7 @@ try {
                 $techName,
                 $workDate,
                 $newStatus,
-                $onHoldStatus,
-                $hoursWorked
+                $onHoldStatus
             ]);
             
             logError("  ✅ New unit created and history added");
