@@ -66,7 +66,7 @@ $stmt = $conn->prepare($query);
 $stmt->execute($params);
 $units = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Get stats
+// Get stats - now includes counts for on_hold_status filters
 $statsQuery = "
     SELECT 
         current_status,
@@ -77,21 +77,29 @@ $statsQuery = "
 $statsStmt = $conn->query($statsQuery);
 $statsRaw = $statsStmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Count units with specific on_hold_status values
+$needsImagingQuery = "SELECT COUNT(*) as count FROM unit WHERE on_hold_status = 'AWAITING REIMAGING'";
+$needsImaging = $conn->query($needsImagingQuery)->fetch(PDO::FETCH_ASSOC)['count'];
+
+$dellDepotQuery = "SELECT COUNT(*) as count FROM unit WHERE on_hold_status = 'AWAITING DELL DEPOT'";
+$dellDepot = $conn->query($dellDepotQuery)->fetch(PDO::FETCH_ASSOC)['count'];
+
 $stats = [
     'diagnosed' => 0,
     'repaired' => 0,
     'partial' => 0,
     'completed' => 0,
-    'ber' => 0
+    'ber' => 0,
+    'needs_imaging' => (int)$needsImaging,
+    'dell_depot' => (int)$dellDepot
 ];
 
 foreach ($statsRaw as $stat) {
-    $status = strtolower($stat['current_status']);
+    $status = strtolower(str_replace(' ', '_', $stat['current_status']));
     if (isset($stats[$status])) {
         $stats[$status] = (int)$stat['count'];
     }
 }
-
 echo json_encode([
     'success' => true,
     'units' => $units,

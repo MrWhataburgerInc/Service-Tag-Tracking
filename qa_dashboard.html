@@ -72,6 +72,21 @@
         .stat-card.completed {
             border-left-color: #17a2b8;
         }
+
+        .stat-card.imaging {
+            border-left-color: #9c27b0;
+        }
+
+        .stat-card.depot {
+            border-left-color: #ff5722;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
         
         .stat-label {
             font-size: 13px;
@@ -410,24 +425,32 @@
         </div>
         
         <!-- Stats Cards -->
-        <div class="stats-grid">
-            <div class="stat-card diagnosed">
-                <div class="stat-label">📍 Diagnosed</div>
-                <div class="stat-value" id="statDiagnosed">0</div>
-            </div>
-            <div class="stat-card repaired">
-                <div class="stat-label">⚠️ Partial</div>
-                <div class="stat-value" id="statPartial">0</div>
-            </div>
-            <div class="stat-card partial">
-                <div class="stat-label">✅ Repaired</div>
-                <div class="stat-value" id="statRepaired">0</div>
-            </div>
-            <div class="stat-card completed">
-                <div class="stat-label">🎉 Completed</div>
-                <div class="stat-value" id="statCompleted">0</div>
-            </div>
+    <div class="stats-grid">
+        <div class="stat-card diagnosed">
+            <div class="stat-label">🔍 Diagnosed</div>
+            <div class="stat-value" id="statDiagnosed">0</div>
         </div>
+        <div class="stat-card repaired">
+            <div class="stat-label">⚠️ Partial</div>
+            <div class="stat-value" id="statPartial">0</div>
+        </div>
+        <div class="stat-card partial">
+            <div class="stat-label">✅ Repaired</div>
+            <div class="stat-value" id="statRepaired">0</div>
+        </div>
+        <div class="stat-card completed">
+            <div class="stat-label">🎉 Completed</div>
+            <div class="stat-value" id="statCompleted">0</div>
+        </div>
+        <div class="stat-card imaging">
+            <div class="stat-label">💾 Needs Imaging</div>
+            <div class="stat-value" id="statNeedsImaging">0</div>
+        </div>
+        <div class="stat-card depot">
+            <div class="stat-label">📦 Awaiting Dell Depot</div>
+            <div class="stat-value" id="statDellDepot">0</div>
+        </div>
+    </div>
         
         <!-- Filters -->
         <div class="filters-section">
@@ -584,6 +607,8 @@
             document.getElementById('statRepaired').textContent = stats.repaired || 0;
             document.getElementById('statPartial').textContent = stats.partial || 0;
             document.getElementById('statCompleted').textContent = stats.completed || 0;
+            document.getElementById('statNeedsImaging').textContent = stats.needs_imaging || 0;
+            document.getElementById('statDellDepot').textContent = stats.dell_depot || 0;
         }
         
         function displayUnits(units) {
