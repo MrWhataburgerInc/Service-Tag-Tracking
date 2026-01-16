@@ -19,8 +19,8 @@ try {
 // Get filter parameters from query string
 $updatedFrom = $_GET['updatedFrom'] ?? null;
 $updatedTo = $_GET['updatedTo'] ?? null;
-$createdFrom = $_GET['createdFrom'] ?? null;
-$createdTo = $_GET['createdTo'] ?? null;
+$serviceTag = $_GET['serviceTag'] ?? '';
+$jobNumber = $_GET['jobNumber'] ?? '';
 $status = $_GET['status'] ?? '';
 $onHold = $_GET['onHold'] ?? '';
 $tech = $_GET['tech'] ?? '';
@@ -50,15 +50,16 @@ if ($updatedTo) {
     $params[] = $updatedTo . ' 23:59:59';
 }
 
-// Created date filters
-if ($createdFrom) {
-    $query .= " AND created_at >= ?";
-    $params[] = $createdFrom . ' 00:00:00';
+// Service tag search
+if ($serviceTag) {
+    $query .= " AND service_tag LIKE ?";
+    $params[] = '%' . strtoupper($serviceTag) . '%';
 }
 
-if ($createdTo) {
-    $query .= " AND created_at <= ?";
-    $params[] = $createdTo . ' 23:59:59';
+// Job number search
+if ($jobNumber) {
+    $query .= " AND job_number LIKE ?";
+    $params[] = '%' . $jobNumber . '%';
 }
 
 if ($status) {

@@ -453,7 +453,7 @@
     </div>
         
         <!-- Filters -->
-    <div class="filters-section">
+   <div class="filters-section">
     <div class="filters-title">🔎 Filter Units</div>
     <div class="filters-grid" style="grid-template-columns: repeat(4, 1fr);">
         <div class="filter-group">
@@ -465,12 +465,12 @@
             <input type="date" id="filterUpdatedTo">
         </div>
         <div class="filter-group">
-            <label>Created From</label>
-            <input type="date" id="filterCreatedFrom">
+            <label>Service Tag</label>
+            <input type="text" id="filterServiceTag" placeholder="Search service tag..." style="text-transform: uppercase;">
         </div>
         <div class="filter-group">
-            <label>Created To</label>
-            <input type="date" id="filterCreatedTo">
+            <label>Job Number</label>
+            <input type="text" id="filterJobNumber" placeholder="Search job #...">
         </div>
         <div class="filter-group">
             <label>Status</label>
@@ -596,6 +596,10 @@
 
         document.getElementById('filterUpdatedFrom').value = weekAgo.toISOString().split('T')[0];
         document.getElementById('filterUpdatedTo').value = today.toISOString().split('T')[0];
+        // Auto-uppercase service tag input
+        document.getElementById('filterServiceTag').addEventListener('input', function() {
+        this.value = this.value.toUpperCase();
+        });
         // Leave created date filters empty by default
         // Load data on page load
         loadData();
@@ -605,8 +609,8 @@
     const params = new URLSearchParams({
         updatedFrom: document.getElementById('filterUpdatedFrom').value,
         updatedTo: document.getElementById('filterUpdatedTo').value,
-        createdFrom: document.getElementById('filterCreatedFrom').value,
-        createdTo: document.getElementById('filterCreatedTo').value,
+        serviceTag: document.getElementById('filterServiceTag').value,
+        jobNumber: document.getElementById('filterJobNumber').value,
         status: document.getElementById('filterStatus').value,
         onHold: document.getElementById('filterOnHold').value,
         tech: document.getElementById('filterTech').value,
@@ -630,7 +634,6 @@
             alert('Error loading data. Make sure backend is running.');
         });
 }
-        
         function updateStats(stats) {
             document.getElementById('statDiagnosed').textContent = stats.diagnosed || 0;
             document.getElementById('statRepaired').textContent = stats.repaired || 0;
@@ -688,14 +691,14 @@
         function resetFilters() {
             document.getElementById('filterUpdatedFrom').value = weekAgo.toISOString().split('T')[0];
             document.getElementById('filterUpdatedTo').value = today.toISOString().split('T')[0];
-            document.getElementById('filterCreatedFrom').value = '';
-            document.getElementById('filterCreatedTo').value = '';
+            document.getElementById('filterServiceTag').value = '';
+            document.getElementById('filterJobNumber').value = '';
             document.getElementById('filterStatus').value = '';
             document.getElementById('filterOnHold').value = '';
             document.getElementById('filterTech').value = '';
             document.getElementById('filterCustomer').value = '';
             loadData();
-        }
+    }
         
         function viewHistory(serviceTag) {
             // Fetch history for this unit
@@ -751,27 +754,27 @@
         }
         
         function exportToExcel() {
-        // Get current filter values
-            const updatedFrom = document.getElementById('filterUpdatedFrom').value;
-            const updatedTo = document.getElementById('filterUpdatedTo').value;
-            const createdFrom = document.getElementById('filterCreatedFrom').value;
-            const createdTo = document.getElementById('filterCreatedTo').value;
-            const status = document.getElementById('filterStatus').value;
-            const onHold = document.getElementById('filterOnHold').value;
-            const tech = document.getElementById('filterTech').value;
-            const customer = document.getElementById('filterCustomer').value;
-        
-        // Build query string with filters
-            const params = new URLSearchParams({
-                updatedFrom: updatedFrom,
-                updatedTo: updatedTo,
-                createdFrom: createdFrom,
-                createdTo: createdTo,
-                status: status,
-                onHold: onHold,
-                tech: tech,
-                customer: customer
-            });
+    // Get current filter values
+    const updatedFrom = document.getElementById('filterUpdatedFrom').value;
+    const updatedTo = document.getElementById('filterUpdatedTo').value;
+    const serviceTag = document.getElementById('filterServiceTag').value;
+    const jobNumber = document.getElementById('filterJobNumber').value;
+    const status = document.getElementById('filterStatus').value;
+    const onHold = document.getElementById('filterOnHold').value;
+    const tech = document.getElementById('filterTech').value;
+    const customer = document.getElementById('filterCustomer').value;
+    
+    // Build query string with filters
+    const params = new URLSearchParams({
+        updatedFrom: updatedFrom,
+        updatedTo: updatedTo,
+        serviceTag: serviceTag,
+        jobNumber: jobNumber,
+        status: status,
+        onHold: onHold,
+        tech: tech,
+        customer: customer
+    });
     
     // Trigger download
     window.location.href = `export_excel.php?${params}`;
