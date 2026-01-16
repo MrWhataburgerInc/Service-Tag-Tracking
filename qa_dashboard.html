@@ -453,69 +453,89 @@
     </div>
         
         <!-- Filters -->
-        <div class="filters-section">
-            <div class="filters-title">🔍 Filter Units</div>
-            <div class="filters-grid">
-                <div class="filter-group">
-                    <label>Date From</label>
-                    <input type="date" id="filterDateFrom">
-                </div>
-                <div class="filter-group">
-                    <label>Date To</label>
-                    <input type="date" id="filterDateTo">
-                </div>
-                <div class="filter-group">
-                    <label>Status</label>
-                    <select id="filterStatus">
-                        <option value="">All Statuses</option>
-                        <option value="DIAGNOSED">DIAGNOSED</option>
-                        <option value="REPAIRED">REPAIRED</option>
-                        <option value="PARTIAL">PARTIAL</option>
-                        <option value="BER">BER</option>
-                        <option value="COMPLETED">COMPLETED</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Tech</label>
-                    <select id="filterTech">
-                        <option value="">All Techs</option>
-                        <option value="ANDRE">ANDRE</option>
-                        <option value="ANTHONY">ANTHONY</option>
-                        <option value="ASHE">ASHE</option>
-                        <option value="BRANDON">BRANDON</option>
-                        <option value="CHRISTIAN">CHRISTIAN</option>
-                        <option value="CODY">CODY</option>
-                        <option value="DARIUS">DARIUS</option>
-                        <option value="DEMETRIUS">DEMETRIUS</option>
-                        <option value="GEOFF">GEOFF</option>
-                        <option value="JESS">JESS</option>
-                        <option value="JOSH">JOSH</option>
-                        <option value="KYLE">KYLE</option>
-                        <option value="TRISTIN">TRISTIN</option>
-                        <option value="TRINITY">TRINITY</option>
-                        <option value="TURNER">TURNER</option>
-                        <option value="TYREK">TYREK</option>
-                        <option value="ZAC">ZAC</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Customer</label>
-                    <select id="filterCustomer">
-                        <option value="">All Customers</option>
-                        <option value="RICHLAND 1">RICHLAND 1</option>
-                        <option value="ANDERSON 5">ANDERSON 5</option>
-                        <option value="UNION">UNION</option>
-                        <option value="FT. MILL">FT. MILL</option>
-                        <option value="IREDELL">IREDELL</option>
-                    </select>
-                </div>
+    <div class="filters-section">
+        <div class="filters-title">🔎 Filter Units</div>
+        <div class="filters-grid">
+            <div class="filter-group">
+                <label>Date From</label>
+                <input type="date" id="filterDateFrom">
             </div>
-            <div class="filter-actions">
-                <button class="btn-filter" onclick="applyFilters()">🔎 Apply Filters</button>
-                <button class="btn-reset" onclick="resetFilters()">🔄 Reset</button>
-                <button class="btn-export" onclick="exportToExcel()">📊 Export to Excel</button>
+            <div class="filter-group">
+                <label>Date To</label>
+                <input type="date" id="filterDateTo">
+            </div>
+            <div class="filter-group">
+                <label>Status</label>
+                <select id="filterStatus">
+                    <option value="">All Statuses</option>
+                    <option value="DIAGNOSED">DIAGNOSED</option>
+                    <option value="REPAIRED">REPAIRED</option>
+                    <option value="PARTIAL">PARTIAL</option>
+                    <option value="IMAGING COMPLETE">IMAGING COMPLETE</option>
+                    <option value="BER">BER</option>
+                    <option value="COMPLETED QA">COMPLETED QA</option>
+                    <option value="COMPLETED BUGS">COMPLETED BUGS</option>
+                    <option value="COMPLETED BER">COMPLETED BER</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>On Hold Status</label>
+                <select id="filterOnHold">
+                    <option value="">All On Hold</option>
+                    <option value="AWAITING QA">AWAITING QA</option>
+                    <option value="AWAITING ADP REPAIRS">AWAITING ADP REPAIRS</option>
+                    <option value="AWAITING WORTH REPAIRS">AWAITING WORTH REPAIRS</option>
+                    <option value="AWAITING WARRANTY / NON-ADP REPAIRS">AWAITING WARRANTY / NON-ADP REPAIRS</option>
+                    <option value="AWAITING CHS REPAIRS">AWAITING CHS REPAIRS</option>
+                    <option value="BER">BER</option>
+                    <option value="BUG UNIT">BUG UNIT</option>
+                    <option value="AWAITING REIMAGING">AWAITING REIMAGING</option>
+                    <option value="AWAITING DELL DEPOT">AWAITING DELL DEPOT</option>
+                    <option value="AWAITING OOS PARTS">AWAITING OOS PARTS</option>
+                    <option value="DOA PART">DOA PART</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Tech</label>
+                <select id="filterTech">
+                    <option value="">All Techs</option>
+                    <option value="ANDRE">ANDRE</option>
+                    <option value="ANTHONY">ANTHONY</option>
+                    <option value="ASHE">ASHE</option>
+                    <option value="BRANDON">BRANDON</option>
+                    <option value="CHRISTIAN">CHRISTIAN</option>
+                    <option value="CODY">CODY</option>
+                    <option value="DARIUS">DARIUS</option>
+                    <option value="DEMETRIUS">DEMETRIUS</option>
+                    <option value="GEOFF">GEOFF</option>
+                    <option value="JESS">JESS</option>
+                    <option value="JOSH">JOSH</option>
+                    <option value="KYLE">KYLE</option>
+                    <option value="TRISTIN">TRISTIN</option>
+                    <option value="TRINITY">TRINITY</option>
+                    <option value="TURNER">TURNER</option>
+                    <option value="TYREK">TYREK</option>
+                    <option value="ZAC">ZAC</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Customer</label>
+                <select id="filterCustomer">
+                    <option value="">All Customers</option>
+                    <option value="RICHLAND 1">RICHLAND 1</option>
+                    <option value="ANDERSON 5">ANDERSON 5</option>
+                    <option value="UNION">UNION</option>
+                    <option value="FT. MILL">FT. MILL</option>
+                    <option value="IREDELL">IREDELL</option>
+                </select>
             </div>
         </div>
+    <div class="filter-actions">
+        <button class="btn-filter" onclick="applyFilters()">🔎 Apply Filters</button>
+        <button class="btn-reset" onclick="resetFilters()">🔄 Reset</button>
+        <button class="btn-export" onclick="exportToExcel()">📊 Export to Excel</button>
+    </div>
+</div>
         
         <!-- Data Table -->
         <div class="data-table-section">
@@ -580,6 +600,7 @@
                 dateFrom: document.getElementById('filterDateFrom').value,
                 dateTo: document.getElementById('filterDateTo').value,
                 status: document.getElementById('filterStatus').value,
+                onHold: document.getElementById('filterOnHold').value,
                 tech: document.getElementById('filterTech').value,
                 customer: document.getElementById('filterCustomer').value
             });
@@ -660,6 +681,7 @@
             document.getElementById('filterDateFrom').value = weekAgo.toISOString().split('T')[0];
             document.getElementById('filterDateTo').value = today.toISOString().split('T')[0];
             document.getElementById('filterStatus').value = '';
+            document.getElementById('filterOnHold').value = '';
             document.getElementById('filterTech').value = '';
             document.getElementById('filterCustomer').value = '';
             loadData();
@@ -719,25 +741,27 @@
         }
         
         function exportToExcel() {
-            // Get current filter values
-            const dateFrom = document.getElementById('filterDateFrom').value;
-            const dateTo = document.getElementById('filterDateTo').value;
-            const status = document.getElementById('filterStatus').value;
-            const tech = document.getElementById('filterTech').value;
-            const customer = document.getElementById('filterCustomer').value;
-            
-            // Build query string with filters
-            const params = new URLSearchParams({
-                dateFrom: dateFrom,
-                dateTo: dateTo,
-                status: status,
-                tech: tech,
-                customer: customer
-            });
-            
-            // Trigger download
-            window.location.href = `export_excel.php?${params}`;
-        }
+        // Get current filter values
+        const dateFrom = document.getElementById('filterDateFrom').value;
+        const dateTo = document.getElementById('filterDateTo').value;
+        const status = document.getElementById('filterStatus').value;
+        const onHold = document.getElementById('filterOnHold').value;
+        const tech = document.getElementById('filterTech').value;
+        const customer = document.getElementById('filterCustomer').value;
+        
+        // Build query string with filters
+        const params = new URLSearchParams({
+            dateFrom: dateFrom,
+            dateTo: dateTo,
+            status: status,
+            onHold: onHold,
+            tech: tech,
+            customer: customer
+        });
+    
+    // Trigger download
+    window.location.href = `export_excel.php?${params}`;
+}
         
         // Close modal on outside click
         document.getElementById('historyModal').addEventListener('click', function(e) {

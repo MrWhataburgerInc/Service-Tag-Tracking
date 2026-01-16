@@ -20,6 +20,7 @@ try {
 $dateFrom = $_GET['dateFrom'] ?? null;
 $dateTo = $_GET['dateTo'] ?? null;
 $status = $_GET['status'] ?? '';
+$onHold = $_GET['onHold'] ?? '';
 $tech = $_GET['tech'] ?? '';
 $customer = $_GET['customer'] ?? '';
 
@@ -48,6 +49,11 @@ if ($dateTo) {
 if ($status) {
     $query .= " AND current_status = ?";
     $params[] = $status;
+}
+
+if ($onHold) {
+    $query .= " AND on_hold_status = ?";
+    $params[] = $onHold;
 }
 
 if ($tech) {

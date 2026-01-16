@@ -20,6 +20,7 @@ try {
 $dateFrom = $_GET['dateFrom'] ?? null;
 $dateTo = $_GET['dateTo'] ?? null;
 $status = $_GET['status'] ?? '';
+$onHold = $_GET['onHold'] ?? '';
 $tech = $_GET['tech'] ?? '';
 $customer = $_GET['customer'] ?? '';
 
@@ -50,6 +51,11 @@ if ($status) {
     $params[] = $status;
 }
 
+if ($onHold) {
+    $query .= " AND on_hold_status = ?";
+    $params[] = $onHold;
+}
+
 if ($tech) {
     $query .= " AND assigned_technician = ?";
     $params[] = $tech;
@@ -66,7 +72,7 @@ $stmt = $conn->prepare($query);
 $stmt->execute($params);
 $units = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Get stats - now includes counts for on_hold_status filters
+// Get stats - combine completed types
 $statsQuery = "
     SELECT 
         current_status,
@@ -96,10 +102,15 @@ $stats = [
 
 foreach ($statsRaw as $stat) {
     $status = strtolower(str_replace(' ', '_', $stat['current_status']));
-    if (isset($stats[$status])) {
+    
+    // Combine all completed types into one "completed" stat
+    if (in_array($stat['current_status'], ['COMPLETED QA', 'COMPLETED BUGS', 'COMPLETED BER'])) {
+        $stats['completed'] += (int)$stat['count'];
+    } elseif (isset($stats[$status])) {
         $stats[$status] = (int)$stat['count'];
     }
 }
+
 echo json_encode([
     'success' => true,
     'units' => $units,
