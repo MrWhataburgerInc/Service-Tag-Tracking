@@ -415,13 +415,6 @@
             font-size: 14px;
             margin-top: 5px;
         }
-        #filterServiceTag {
-            text-transform: uppercase;
-        }
-
-        #filterServiceTag::placeholder {
-            text-transform: none;
-        }
     </style>
 </head>
 <body>
@@ -471,14 +464,13 @@
             <label>Last Updated To</label>
             <input type="date" id="filterUpdatedTo">
         </div>
-       <div class="filter-group">
+        <div class="filter-group">
             <label>Service Tag</label>
-            <input type="text" id="filterServiceTag" placeholder="Search Service Tag">
+            <input type="text" id="filterServiceTag" placeholder="Search Service Tag" style="text-transform: uppercase;">
         </div>
         <div class="filter-group">
             <label>Job Number</label>
             <input type="text" id="filterJobNumber" placeholder="Search Job #">
-        </div>
         </div>
         <div class="filter-group">
             <label>Status</label>
