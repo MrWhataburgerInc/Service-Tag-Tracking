@@ -20,11 +20,8 @@ CREATE TABLE unit (
         'DIAGNOSED', 
         'REPAIRED', 
         'PARTIAL', 
-        'BER', 
         'IMAGING COMPLETE',
-        'COMPLETED QA',
-        'COMPLETED BUGS',
-        'COMPLETED BER'
+        'COMPLETED'
     ) NOT NULL,
     on_hold_status ENUM(
         'AWAITING QA',
@@ -50,6 +47,7 @@ CREATE TABLE unit (
     INDEX idx_customer (customer_name),
     INDEX idx_technician (assigned_technician),
     INDEX idx_current_tech_id (current_tech_id),
+    INDEX idx_created (created_at),
     INDEX idx_updated (updated_at),
     CONSTRAINT fk_unit_tech FOREIGN KEY (current_tech_id) REFERENCES technician(tech_id) ON DELETE SET NULL ON UPDATE CASCADE
 );
@@ -94,93 +92,87 @@ INSERT INTO technician (technician_name) VALUES
 
 -- 5. Insert comprehensive sample units to test all statuses and on-hold statuses
 -- DIAGNOSED units
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('FFH8VW3', 82071, 'DIAGNOSED', 'AWAITING WARRANTY / NON-ADP REPAIRS', 'RICHLAND 1', 'GEOFF', (SELECT tech_id FROM technician WHERE technician_name = 'GEOFF'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('FFH8VW3', 82071, 'DIAGNOSED', 'AWAITING WARRANTY / NON-ADP REPAIRS', 'RICHLAND 1', 'GEOFF', (SELECT tech_id FROM technician WHERE technician_name = 'GEOFF'), '2025-01-10 08:30:00');
 
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('ABC1234', 10001, 'DIAGNOSED', 'AWAITING QA', 'ANDERSON 5', 'BRANDON', (SELECT tech_id FROM technician WHERE technician_name = 'BRANDON'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('ABC1234', 10001, 'DIAGNOSED', 'AWAITING QA', 'ANDERSON 5', 'BRANDON', (SELECT tech_id FROM technician WHERE technician_name = 'BRANDON'), '2025-01-11 09:15:00');
 
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('DEF5678', 10002, 'DIAGNOSED', 'AWAITING ADP REPAIRS', 'FT. MILL', 'JOSH', (SELECT tech_id FROM technician WHERE technician_name = 'JOSH'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('DEF5678', 10002, 'DIAGNOSED', 'AWAITING ADP REPAIRS', 'FT. MILL', 'JOSH', (SELECT tech_id FROM technician WHERE technician_name = 'JOSH'), '2025-01-12 10:00:00');
 
 -- REPAIRED units
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('a1b2c3d', 12345, 'REPAIRED', 'AWAITING QA', 'ANDERSON 5', 'BRANDON', (SELECT tech_id FROM technician WHERE technician_name = 'BRANDON'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('a1b2c3d', 12345, 'REPAIRED', 'AWAITING QA', 'ANDERSON 5', 'BRANDON', (SELECT tech_id FROM technician WHERE technician_name = 'BRANDON'), '2025-01-08 14:20:00');
 
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('GHI9012', 10003, 'REPAIRED', 'AWAITING WORTH REPAIRS', 'UNION', 'KYLE', (SELECT tech_id FROM technician WHERE technician_name = 'KYLE'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('GHI9012', 10003, 'REPAIRED', 'AWAITING WORTH REPAIRS', 'UNION', 'KYLE', (SELECT tech_id FROM technician WHERE technician_name = 'KYLE'), '2025-01-13 11:30:00');
 
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('JKL3456', 10004, 'REPAIRED', 'AWAITING CHS REPAIRS', 'IREDELL', 'TRISTIN', (SELECT tech_id FROM technician WHERE technician_name = 'TRISTIN'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('JKL3456', 10004, 'REPAIRED', 'AWAITING CHS REPAIRS', 'IREDELL', 'TRISTIN', (SELECT tech_id FROM technician WHERE technician_name = 'TRISTIN'), '2025-01-14 13:45:00');
 
 -- PARTIAL units
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('MNO7890', 10005, 'PARTIAL', 'BER', 'RICHLAND 1', 'ANTHONY', (SELECT tech_id FROM technician WHERE technician_name = 'ANTHONY'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('MNO7890', 10005, 'PARTIAL', 'BER', 'RICHLAND 1', 'ANTHONY', (SELECT tech_id FROM technician WHERE technician_name = 'ANTHONY'), '2025-01-09 07:50:00');
 
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('PQR1122', 10006, 'PARTIAL', 'BUG UNIT', 'ANDERSON 5', 'ASHE', (SELECT tech_id FROM technician WHERE technician_name = 'ASHE'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('PQR1122', 10006, 'PARTIAL', 'BUG UNIT', 'ANDERSON 5', 'ASHE', (SELECT tech_id FROM technician WHERE technician_name = 'ASHE'), '2025-01-15 16:00:00');
 
 -- IMAGING COMPLETE units
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('STU3344', 10007, 'IMAGING COMPLETE', 'AWAITING REIMAGING', 'FT. MILL', 'CODY', (SELECT tech_id FROM technician WHERE technician_name = 'CODY'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('STU3344', 10007, 'IMAGING COMPLETE', 'AWAITING REIMAGING', 'FT. MILL', 'CODY', (SELECT tech_id FROM technician WHERE technician_name = 'CODY'), '2025-01-07 12:10:00');
 
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('VWX5566', 10008, 'IMAGING COMPLETE', 'AWAITING REIMAGING', 'UNION', 'DARIUS', (SELECT tech_id FROM technician WHERE technician_name = 'DARIUS'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('VWX5566', 10008, 'IMAGING COMPLETE', 'AWAITING REIMAGING', 'UNION', 'DARIUS', (SELECT tech_id FROM technician WHERE technician_name = 'DARIUS'), '2025-01-06 15:25:00');
 
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('YZA7788', 10009, 'IMAGING COMPLETE', 'AWAITING REIMAGING', 'IREDELL', 'CHRISTIAN', (SELECT tech_id FROM technician WHERE technician_name = 'CHRISTIAN'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('YZA7788', 10009, 'IMAGING COMPLETE', 'AWAITING REIMAGING', 'IREDELL', 'CHRISTIAN', (SELECT tech_id FROM technician WHERE technician_name = 'CHRISTIAN'), '2025-01-05 08:40:00');
 
--- BER units
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('BCD9900', 10010, 'BER', 'BER', 'RICHLAND 1', 'GEOFF', (SELECT tech_id FROM technician WHERE technician_name = 'GEOFF'));
+-- COMPLETED units with different on-hold statuses
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('HIJ3344', 10012, 'COMPLETED', 'AWAITING QA', 'FT. MILL', 'TURNER', (SELECT tech_id FROM technician WHERE technician_name = 'TURNER'), '2025-01-04 09:30:00');
 
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('EFG1122', 10011, 'BER', 'BER', 'ANDERSON 5', 'JESS', (SELECT tech_id FROM technician WHERE technician_name = 'JESS'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('KLM5566', 10013, 'COMPLETED', 'AWAITING QA', 'UNION', 'ZAC', (SELECT tech_id FROM technician WHERE technician_name = 'ZAC'), '2025-01-03 11:15:00');
 
--- COMPLETED QA units
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('HIJ3344', 10012, 'COMPLETED QA', NULL, 'FT. MILL', 'TURNER', (SELECT tech_id FROM technician WHERE technician_name = 'TURNER'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('NOP7788', 10014, 'COMPLETED', 'AWAITING QA', 'IREDELL', 'TYREK', (SELECT tech_id FROM technician WHERE technician_name = 'TYREK'), '2025-01-02 14:00:00');
 
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('KLM5566', 10013, 'COMPLETED QA', NULL, 'UNION', 'ZAC', (SELECT tech_id FROM technician WHERE technician_name = 'ZAC'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('QRS9900', 10015, 'COMPLETED', 'BUG UNIT', 'RICHLAND 1', 'ANDRE', (SELECT tech_id FROM technician WHERE technician_name = 'ANDRE'), '2025-01-01 10:45:00');
 
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('NOP7788', 10014, 'COMPLETED QA', NULL, 'IREDELL', 'TYREK', (SELECT tech_id FROM technician WHERE technician_name = 'TYREK'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('TUV1122', 10016, 'COMPLETED', 'BUG UNIT', 'ANDERSON 5', 'TRINITY', (SELECT tech_id FROM technician WHERE technician_name = 'TRINITY'), '2024-12-30 13:20:00');
 
--- COMPLETED BUGS units
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('QRS9900', 10015, 'COMPLETED BUGS', NULL, 'RICHLAND 1', 'ANDRE', (SELECT tech_id FROM technician WHERE technician_name = 'ANDRE'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('WXY3344', 10017, 'COMPLETED', 'BER', 'FT. MILL', 'DAVID', (SELECT tech_id FROM technician WHERE technician_name = 'DAVID'), '2024-12-29 16:10:00');
 
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('TUV1122', 10016, 'COMPLETED BUGS', NULL, 'ANDERSON 5', 'TRINITY', (SELECT tech_id FROM technician WHERE technician_name = 'TRINITY'));
-
--- COMPLETED BER units
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('WXY3344', 10017, 'COMPLETED BER', NULL, 'FT. MILL', 'DAVID', (SELECT tech_id FROM technician WHERE technician_name = 'DAVID'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('AAA1111', 10025, 'COMPLETED', 'BER', 'UNION', 'GEOFF', (SELECT tech_id FROM technician WHERE technician_name = 'GEOFF'), '2024-12-28 08:00:00');
 
 -- Units with AWAITING DELL DEPOT
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('ZAB5566', 10018, 'DIAGNOSED', 'AWAITING DELL DEPOT', 'UNION', 'CRUZ', (SELECT tech_id FROM technician WHERE technician_name = 'CRUZ'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('ZAB5566', 10018, 'DIAGNOSED', 'AWAITING DELL DEPOT', 'UNION', 'CRUZ', (SELECT tech_id FROM technician WHERE technician_name = 'CRUZ'), '2024-12-27 09:50:00');
 
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('CDE7788', 10019, 'REPAIRED', 'AWAITING DELL DEPOT', 'IREDELL', 'PAM', (SELECT tech_id FROM technician WHERE technician_name = 'PAM'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('CDE7788', 10019, 'REPAIRED', 'AWAITING DELL DEPOT', 'IREDELL', 'PAM', (SELECT tech_id FROM technician WHERE technician_name = 'PAM'), '2024-12-26 12:30:00');
 
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('FGH9900', 10020, 'PARTIAL', 'AWAITING DELL DEPOT', 'RICHLAND 1', 'RYAN', (SELECT tech_id FROM technician WHERE technician_name = 'RYAN'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('FGH9900', 10020, 'PARTIAL', 'AWAITING DELL DEPOT', 'RICHLAND 1', 'RYAN', (SELECT tech_id FROM technician WHERE technician_name = 'RYAN'), '2024-12-25 15:15:00');
 
 -- Units with AWAITING OOS PARTS
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('IJK1234', 10021, 'DIAGNOSED', 'AWAITING OOS PARTS', 'ANDERSON 5', 'GEOFF', (SELECT tech_id FROM technician WHERE technician_name = 'GEOFF'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('IJK1234', 10021, 'DIAGNOSED', 'AWAITING OOS PARTS', 'ANDERSON 5', 'GEOFF', (SELECT tech_id FROM technician WHERE technician_name = 'GEOFF'), '2024-12-24 07:45:00');
 
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('LMN5678', 10022, 'REPAIRED', 'AWAITING OOS PARTS', 'FT. MILL', 'BRANDON', (SELECT tech_id FROM technician WHERE technician_name = 'BRANDON'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('LMN5678', 10022, 'REPAIRED', 'AWAITING OOS PARTS', 'FT. MILL', 'BRANDON', (SELECT tech_id FROM technician WHERE technician_name = 'BRANDON'), '2024-12-23 10:20:00');
 
 -- Units with DOA PART
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('OPQ9012', 10023, 'PARTIAL', 'DOA PART', 'UNION', 'JOSH', (SELECT tech_id FROM technician WHERE technician_name = 'JOSH'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('OPQ9012', 10023, 'PARTIAL', 'DOA PART', 'UNION', 'JOSH', (SELECT tech_id FROM technician WHERE technician_name = 'JOSH'), '2024-12-22 14:55:00');
 
-INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('RST3456', 10024, 'DIAGNOSED', 'DOA PART', 'IREDELL', 'KYLE', (SELECT tech_id FROM technician WHERE technician_name = 'KYLE'));
+INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id, created_at)
+VALUES ('RST3456', 10024, 'DIAGNOSED', 'DOA PART', 'IREDELL', 'KYLE', (SELECT tech_id FROM technician WHERE technician_name = 'KYLE'), '2024-12-21 11:40:00');
 
 -- 6. Insert sample work history
 INSERT INTO work_history (service_tag, job_number, technician_name, work_date, status_before, status_after, on_hold_status, notes)
@@ -193,7 +185,7 @@ INSERT INTO work_history (service_tag, job_number, technician_name, work_date, s
 VALUES ('STU3344', 10007, 'CODY', '2025-01-18', 'REPAIRED', 'IMAGING COMPLETE', 'AWAITING REIMAGING', 'Imaging completed successfully.');
 
 INSERT INTO work_history (service_tag, job_number, technician_name, work_date, status_before, status_after, on_hold_status, notes)
-VALUES ('HIJ3344', 10012, 'TURNER', '2025-01-22', 'REPAIRED', 'COMPLETED QA', NULL, 'Passed QA inspection.');
+VALUES ('HIJ3344', 10012, 'TURNER', '2025-01-22', 'REPAIRED', 'COMPLETED', 'AWAITING QA', 'Unit completed, awaiting QA review.');
 
 -- Verify data
 SELECT 'Technicians' as label, COUNT(*) as count FROM technician

@@ -17,8 +17,10 @@ try {
 }
 
 // Get filter parameters
-$dateFrom = $_GET['dateFrom'] ?? null;
-$dateTo = $_GET['dateTo'] ?? null;
+$updatedFrom = $_GET['updatedFrom'] ?? null;
+$updatedTo = $_GET['updatedTo'] ?? null;
+$createdFrom = $_GET['createdFrom'] ?? null;
+$createdTo = $_GET['createdTo'] ?? null;
 $status = $_GET['status'] ?? '';
 $onHold = $_GET['onHold'] ?? '';
 $tech = $_GET['tech'] ?? '';
@@ -32,18 +34,31 @@ $query = "SELECT
     on_hold_status as current_on_hold_status,
     assigned_technician as current_tech,
     job_number,
+    created_at,
     updated_at as last_updated
 FROM unit WHERE 1=1";
 $params = [];
 
-if ($dateFrom) {
+// Updated date filters
+if ($updatedFrom) {
     $query .= " AND updated_at >= ?";
-    $params[] = $dateFrom . ' 00:00:00';
+    $params[] = $updatedFrom . ' 00:00:00';
 }
 
-if ($dateTo) {
+if ($updatedTo) {
     $query .= " AND updated_at <= ?";
-    $params[] = $dateTo . ' 23:59:59';
+    $params[] = $updatedTo . ' 23:59:59';
+}
+
+// Created date filters
+if ($createdFrom) {
+    $query .= " AND created_at >= ?";
+    $params[] = $createdFrom . ' 00:00:00';
+}
+
+if ($createdTo) {
+    $query .= " AND created_at <= ?";
+    $params[] = $createdTo . ' 23:59:59';
 }
 
 if ($status) {
@@ -72,7 +87,7 @@ $stmt = $conn->prepare($query);
 $stmt->execute($params);
 $units = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Get stats - combine completed types
+// Get stats
 $statsQuery = "
     SELECT 
         current_status,
@@ -95,18 +110,13 @@ $stats = [
     'repaired' => 0,
     'partial' => 0,
     'completed' => 0,
-    'ber' => 0,
     'needs_imaging' => (int)$needsImaging,
     'dell_depot' => (int)$dellDepot
 ];
 
 foreach ($statsRaw as $stat) {
     $status = strtolower(str_replace(' ', '_', $stat['current_status']));
-    
-    // Combine all completed types into one "completed" stat
-    if (in_array($stat['current_status'], ['COMPLETED QA', 'COMPLETED BUGS', 'COMPLETED BER'])) {
-        $stats['completed'] += (int)$stat['count'];
-    } elseif (isset($stats[$status])) {
+    if (isset($stats[$status])) {
         $stats[$status] = (int)$stat['count'];
     }
 }

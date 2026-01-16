@@ -17,8 +17,10 @@ try {
 }
 
 // Get filter parameters from query string
-$dateFrom = $_GET['dateFrom'] ?? null;
-$dateTo = $_GET['dateTo'] ?? null;
+$updatedFrom = $_GET['updatedFrom'] ?? null;
+$updatedTo = $_GET['updatedTo'] ?? null;
+$createdFrom = $_GET['createdFrom'] ?? null;
+$createdTo = $_GET['createdTo'] ?? null;
 $status = $_GET['status'] ?? '';
 $onHold = $_GET['onHold'] ?? '';
 $tech = $_GET['tech'] ?? '';
@@ -32,18 +34,31 @@ $query = "SELECT
     on_hold_status,
     assigned_technician,
     job_number,
+    created_at,
     updated_at
 FROM unit WHERE 1=1";
 $params = [];
 
-if ($dateFrom) {
+// Updated date filters
+if ($updatedFrom) {
     $query .= " AND updated_at >= ?";
-    $params[] = $dateFrom . ' 00:00:00';
+    $params[] = $updatedFrom . ' 00:00:00';
 }
 
-if ($dateTo) {
+if ($updatedTo) {
     $query .= " AND updated_at <= ?";
-    $params[] = $dateTo . ' 23:59:59';
+    $params[] = $updatedTo . ' 23:59:59';
+}
+
+// Created date filters
+if ($createdFrom) {
+    $query .= " AND created_at >= ?";
+    $params[] = $createdFrom . ' 00:00:00';
+}
+
+if ($createdTo) {
+    $query .= " AND created_at <= ?";
+    $params[] = $createdTo . ' 23:59:59';
 }
 
 if ($status) {
@@ -86,6 +101,7 @@ fputcsv($output, [
     'On Hold Status',
     'Assigned Tech',
     'Job Number',
+    'Created Date',
     'Last Updated'
 ]);
 
@@ -98,6 +114,7 @@ foreach ($units as $unit) {
         $unit['on_hold_status'] ?? '',
         $unit['assigned_technician'] ?? '',
         $unit['job_number'] ?? '',
+        date('m/d/Y H:i', strtotime($unit['created_at'])),
         date('m/d/Y H:i', strtotime($unit['updated_at']))
     ]);
 }
