@@ -17,7 +17,19 @@ CREATE TABLE unit (
     service_tag VARCHAR(50) NOT NULL,
     job_number INT NOT NULL,
     current_status ENUM('DIAGNOSED', 'REPAIRED', 'PARTIAL', 'BER', 'COMPLETED') NOT NULL,
-    on_hold_status ENUM('AWAITING ADP REPAIR', 'AWAITING DELL WARRANTY_PARTS', 'AWAITING QA', 'AWAITING VENDOR DEPOT'),
+    on_hold_status ENUM(
+        'AWAITING QA',
+        'AWAITING REPAIRS',
+        'AWAITING WARRANTY PARTS',
+        'AWAITING ADP PARTS',
+        'AWAITING WORTH REPAIRS',
+        'AWAITING REIMAGE',
+        'AWAITING DELL DEPOT',
+        'AWAITING IMAGING',
+        'AWAITING VENDOR DEPOT',
+        'BUG UNIT',
+        'BER'
+    ),
     customer_name ENUM('RICHLAND 1', 'ANDERSON 5', 'FT. MILL', 'UNION', 'IREDELL'),
     assigned_technician VARCHAR(50),
     current_tech_id INT,
@@ -42,7 +54,19 @@ CREATE TABLE work_history (
     work_date DATE NOT NULL,
     status_before VARCHAR(50),
     status_after VARCHAR(50) NOT NULL,
-    on_hold_status ENUM('AWAITING ADP REPAIR', 'AWAITING DELL WARRANTY_PARTS', 'AWAITING QA', 'AWAITING VENDOR DEPOT'),
+    on_hold_status ENUM(
+        'AWAITING QA',
+        'AWAITING REPAIRS',
+        'AWAITING WARRANTY PARTS',
+        'AWAITING ADP PARTS',
+        'AWAITING WORTH REPAIRS',
+        'AWAITING REIMAGE',
+        'AWAITING DELL DEPOT',
+        'AWAITING IMAGING',
+        'AWAITING VENDOR DEPOT',
+        'BUG UNIT',
+        'BER'
+    ),
     notes TEXT,
     submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     
@@ -61,7 +85,7 @@ INSERT INTO technician (technician_name) VALUES
 
 -- 5. Insert sample units
 INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
-VALUES ('FFH8VW3', 82071, 'DIAGNOSED', 'AWAITING DELL WARRANTY_PARTS', 'RICHLAND 1', 'GEOFF', (SELECT tech_id FROM technician WHERE technician_name = 'GEOFF'));
+VALUES ('FFH8VW3', 82071, 'DIAGNOSED', 'AWAITING WARRANTY PARTS', 'RICHLAND 1', 'GEOFF', (SELECT tech_id FROM technician WHERE technician_name = 'GEOFF'));
 
 INSERT INTO unit (service_tag, job_number, current_status, on_hold_status, customer_name, assigned_technician, current_tech_id)
 VALUES ('a1b2c3d', 12345, 'REPAIRED', 'AWAITING QA', 'ANDERSON 5', 'BRANDON', (SELECT tech_id FROM technician WHERE technician_name = 'BRANDON'));
@@ -71,10 +95,10 @@ VALUES ('d3b2a1c', 54321, 'REPAIRED', 'AWAITING QA', 'ANDERSON 5', 'BRANDON', (S
 
 -- 6. Insert sample work history
 INSERT INTO work_history (service_tag, job_number, technician_name, work_date, status_before, status_after, on_hold_status, notes)
-VALUES ('FFH8VW3', 82071, 'GEOFF', '2025-01-15', NULL, 'DIAGNOSED', 'AWAITING DELL WARRANTY_PARTS', 'Diagnosed the unit, awaiting parts.', 2.0);
+VALUES ('FFH8VW3', 82071, 'GEOFF', '2025-01-15', NULL, 'DIAGNOSED', 'AWAITING WARRANTY PARTS', 'Diagnosed the unit, awaiting parts.');
 
 INSERT INTO work_history (service_tag, job_number, technician_name, work_date, status_before, status_after, on_hold_status, notes)
-VALUES ('a1b2c3d', 12345, 'BRANDON', '2025-01-20', 'DIAGNOSED', 'REPAIRED', 'AWAITING QA', 'Repaired motherboard.', 3.5);
+VALUES ('a1b2c3d', 12345, 'BRANDON', '2025-01-20', 'DIAGNOSED', 'REPAIRED', 'AWAITING QA', 'Repaired motherboard.');
 
 -- Verify data
 SELECT 'Technicians' as label, COUNT(*) as count FROM technician

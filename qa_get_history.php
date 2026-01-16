@@ -27,7 +27,7 @@ if (empty($serviceTag)) {
 // Get work history for this unit
 $stmt = $conn->prepare("
     SELECT 
-        tech_name,
+        technician_name,
         work_date,
         status_before,
         status_after,
