@@ -35,6 +35,7 @@ CREATE TABLE unit (
         'AWAITING DELL DEPOT',
         'AWAITING OOS PARTS',
         'DOA PART'
+		'IDK ITS BROKEN.'
     ),
     customer_name ENUM('RICHLAND 1', 'ANDERSON 5', 'FT. MILL', 'UNION', 'IREDELL'),
     assigned_technician VARCHAR(50),
